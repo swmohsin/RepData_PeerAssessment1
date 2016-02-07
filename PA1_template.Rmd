@@ -56,3 +56,19 @@ Mean steps taken per day are `r mean_steps_by_date`
 Median steps taken per day are `r median_steps_by_date`
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+```{r}
+dates <- as.Date(data_imputed$date)
+data_imputed$isWeekday <- weekdays(dates) %in% 'Sunday'
+
+data_weekend <- subset(data_imputed, isWeekday == T)
+data_weekday <- subset(data_imputed, isWeekday == F)
+
+weekend <- aggregate(steps ~ interval, data_weekend, mean)
+weekday <- aggregate(steps ~ interval, data_weekday, mean)
+
+par(mfrow=c(2,1))
+plot(weekend, type='l', main='weekend')
+plot(weekday, type='l', main='weekday')
+
+```
